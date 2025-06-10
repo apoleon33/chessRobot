@@ -1,0 +1,3 @@
+[submodule "libs/onrobot-rg"]
+	path = libs/onrobot-rg
+	url = https://github.com/takuya-ki/onrobot-rg.git
