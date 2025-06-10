@@ -1,2 +1,7 @@
+# robot
 ROBOT_IP = "192.168.12.126"
+
+# pince
 GRIPPER_IP = "192.168.12.244"
+GRIPPER_PORT = 502
+GRIPPER_MODEL = "rg6"
