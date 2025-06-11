@@ -11,10 +11,12 @@ class ChessBot:
     robot: rtde_control.RTDEControlInterface
 
     # Les coordonnées pour placer la pince au dessus de la case A1
-    A1_COORDINATE: list[float] = [0.519, 0.041, -0.05, 2.32, -2.11, 0.0]
+    A1_COORDINATE: list[float] = [0.505, 0.049, -0.05, 2.32, -2.11, 0.0]
 
     # Largeur nécessaire à la pince pour entourer une pièce (en mm)
-    PIECE_WIDTH: int = 330
+    PIECE_WIDTH: int = 315
+    # hauteur nécessaire pour prendre une pièce
+    PIECE_HEIGHT: int = -0.225
 
     def __init__(self, gripper_model: str = GRIPPER_MODEL, gripper_ip=GRIPPER_IP, gripper_port=GRIPPER_PORT,
                  robot_ip=ROBOT_IP):
@@ -43,5 +45,10 @@ class ChessBot:
         """
         log(f"Ouverture de la pince d'une largeur {self.PIECE_WIDTH}mm")
         self.gripper.move_gripper(self.PIECE_WIDTH)
+        while self.gripper.get_status()[0]:
+            time.sleep(0.5)
+
+    def close_gripper(self) -> None:
+        self.gripper.close_gripper()
         while self.gripper.get_status()[0]:
             time.sleep(0.5)
