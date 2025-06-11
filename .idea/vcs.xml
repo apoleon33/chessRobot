@@ -2,8 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/libs/onrobot-rg" vcs="Git" />
     <mapping directory="/mnt/EEFC7C72FC7C3745/pycharmProjects/chessRobot" vcs="Git" />
-    <mapping directory="/mnt/EEFC7C72FC7C3745/pycharmProjects/chessRobot/libs/onrobot-rg" vcs="Git" />
   </component>
 </project>
