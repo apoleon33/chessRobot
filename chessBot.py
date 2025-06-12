@@ -83,7 +83,15 @@ class ChessBot:
         self.coordinate.z = self.A1_COORDINATE[2]
         self.__updateCoordinate()
 
+    def goToCase(self, case: str) -> None:
+        """
+        Se déplace en direction de la case, sans changer l'axe z.
+        :param case: la case vers laquelle aller, de la forme ``yx`` (ex: ``c3``)
+        """
+        self.coordinate.x = Coordinate.getIndexFromLetter(case[0]) - 1
+        self.coordinate.y = int(case[1]) - 1
 
+        self.__updateCoordinate()
 
     def close(self):
         """ Déconnecte la pince et le robot """
