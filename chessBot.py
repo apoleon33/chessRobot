@@ -72,6 +72,19 @@ class ChessBot:
         while self.gripper.get_status()[0]:
             time.sleep(0.5)
 
+    def __updateCoordinate(self):
+        self.robot.moveL(self.coordinate.robotCoordinate, self.speed, self.acceleration)
+
+    def goAtPieceHeight(self):
+        self.coordinate.z = self.PIECE_HEIGHT
+        self.__updateCoordinate()
+
+    def resetHeight(self):
+        self.coordinate.z = self.A1_COORDINATE[2]
+        self.__updateCoordinate()
+
+
+
     def close(self):
         """ Déconnecte la pince et le robot """
         log("Closing connection...")
