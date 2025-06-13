@@ -4,6 +4,7 @@ import rtde_control
 
 from conf import *
 from coordinate import Coordinate
+from echiquier import Echiquier
 from libs.gripper import RG
 
 
@@ -52,7 +53,8 @@ class ChessBot:
         log("Lancement du robot, déplacement vers la case A1 et ouverture de la pince")
 
         self.robot.moveL(self.A1_COORDINATE, self.speed, self.acceleration)
-        self.coordinate = Coordinate(self.A1_COORDINATE)  # synchronisé
+        self.coordinate = Coordinate([0, 0, self.PIECE_HEIGHT, self.A1_COORDINATE[3], self.A1_COORDINATE[4],
+                                      self.A1_COORDINATE[5]])  # synchronisé
         self.open_gripper()
 
         log("Fin de la procédure 'start'")
@@ -66,11 +68,13 @@ class ChessBot:
         self.gripper.move_gripper(self.PIECE_WIDTH)
         while self.gripper.get_status()[0]:
             time.sleep(0.5)
+        # time.sleep(1)
 
     def close_gripper(self) -> None:
         self.gripper.close_gripper()
         while self.gripper.get_status()[0]:
             time.sleep(0.5)
+        # time.sleep(1)
 
     def __updateCoordinate(self):
         self.robot.moveL(self.coordinate.robotCoordinate, self.speed, self.acceleration)
@@ -88,10 +92,49 @@ class ChessBot:
         Se déplace en direction de la case, sans changer l'axe z.
         :param case: la case vers laquelle aller, de la forme ``yx`` (ex: ``c3``)
         """
-        self.coordinate.x = Coordinate.getIndexFromLetter(case[0]) - 1
-        self.coordinate.y = int(case[1]) - 1
+        self.coordinate.x = Coordinate.getIndexFromLetter(case[0])
+        self.coordinate.y = int(case[1])
+
+        log(f"we go at {self.coordinate.robotCoordinate}")
 
         self.__updateCoordinate()
+
+    def goToDumpster(self):
+        self.robot.moveL([
+            Echiquier.pieceTakenX.value,
+             Echiquier.pieceTakenY.value,
+            0.0,
+            self.A1_COORDINATE[3],
+            self.A1_COORDINATE[4],
+            self.A1_COORDINATE[5]],
+            self.speed,
+            self.acceleration)
+
+        self.robot.moveL([
+            Echiquier.pieceTakenX.value,
+             Echiquier.pieceTakenY.value,
+            self.PIECE_HEIGHT,
+            self.A1_COORDINATE[3],
+            self.A1_COORDINATE[4],
+            self.A1_COORDINATE[5]],
+            self.speed,
+            self.acceleration
+        )
+        self.gripper.move_gripper(self.PIECE_WIDTH)
+        while self.gripper.get_status()[0]:
+            time.sleep(0.5)
+        self.robot.moveL([
+            Echiquier.pieceTakenX.value,
+             Echiquier.pieceTakenY.value,
+            0.0,
+            self.A1_COORDINATE[3],
+            self.A1_COORDINATE[4],
+            self.A1_COORDINATE[5]],
+            self.speed,
+            self.acceleration
+        )
+
+
 
     def close(self):
         """ Déconnecte la pince et le robot """
