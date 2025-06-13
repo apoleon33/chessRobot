@@ -9,8 +9,6 @@ class ChessEngine:
     stockfish: Stockfish
     robot: ChessBot
 
-    __robot_activate: bool = True # pour pouvoir tester plus facilement
-
     def __init__(self,
                  path: str,
                  gripper_model: str = GRIPPER_MODEL,
@@ -20,7 +18,7 @@ class ChessEngine:
                  robot_ip=ROBOT_IP):
         self.stockfish = Stockfish(path, depth=depth)
 
-        if self.__robot_activate:
+        if ROBOT_ACTIVATED:
             self.robot = ChessBot(gripper_model, gripper_ip, gripper_port, robot_ip)
             self.robot.start()
 
@@ -41,7 +39,7 @@ class ChessEngine:
         match self.stockfish.will_move_be_a_capture(bestMove):
             case self.stockfish.Capture.DIRECT_CAPTURE:
                 log("capture détectée!")
-                if self.__robot_activate:
+                if ROBOT_ACTIVATED:
                     # capture du pion et dépose dans la poubelle
                     self.robot.resetHeight()
                     self.robot.open_gripper()
@@ -68,7 +66,7 @@ class ChessEngine:
 
             case self.stockfish.Capture.NO_CAPTURE:
                 # mouvement normal
-                if self.__robot_activate:
+                if ROBOT_ACTIVATED:
                     # On prend la première pièce
                     self.robot.resetHeight()
                     self.robot.open_gripper()
@@ -90,4 +88,4 @@ class ChessEngine:
         self.stockfish.make_moves_from_current_position([bestMove])
 
     def __str__(self):
-        return self.stockfish.get_board_visual()
+        return f"{self.stockfish.get_board_visual()}\n FEN position: {self.stockfish.get_fen_position()}"

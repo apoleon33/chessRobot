@@ -1,5 +1,6 @@
 # robot
 ROBOT_IP = "192.168.12.126"
+ROBOT_ACTIVATED: bool = False # pour pouvoir tester plus facilement
 
 # pince
 GRIPPER_IP = "192.168.12.244"
