@@ -14,7 +14,8 @@ class ChessBot:
 
     coordinate: Coordinate
     # Les coordonnées pour placer la pince au dessus de la case A1
-    A1_COORDINATE: list[float] = [0.505, 0.049, -0.05, 2.32, -2.11, 0.0]
+    # 0.505, 0.049
+    A1_COORDINATE: list[float] = [Echiquier.xValues[1], Echiquier.yValues[1], -0.05, 2.32, -2.11, 0.0]
 
     # Largeur nécessaire à la pince pour entourer une pièce (en mm)
     PIECE_WIDTH: int = 315
@@ -102,7 +103,7 @@ class ChessBot:
     def goToDumpster(self):
         self.robot.moveL([
             Echiquier.pieceTakenX.value,
-             Echiquier.pieceTakenY.value,
+            Echiquier.pieceTakenY.value,
             0.0,
             self.A1_COORDINATE[3],
             self.A1_COORDINATE[4],
@@ -112,7 +113,7 @@ class ChessBot:
 
         self.robot.moveL([
             Echiquier.pieceTakenX.value,
-             Echiquier.pieceTakenY.value,
+            Echiquier.pieceTakenY.value,
             self.PIECE_HEIGHT,
             self.A1_COORDINATE[3],
             self.A1_COORDINATE[4],
@@ -125,7 +126,7 @@ class ChessBot:
             time.sleep(0.5)
         self.robot.moveL([
             Echiquier.pieceTakenX.value,
-             Echiquier.pieceTakenY.value,
+            Echiquier.pieceTakenY.value,
             0.0,
             self.A1_COORDINATE[3],
             self.A1_COORDINATE[4],
@@ -133,8 +134,6 @@ class ChessBot:
             self.speed,
             self.acceleration
         )
-
-
 
     def close(self):
         """ Déconnecte la pince et le robot """
