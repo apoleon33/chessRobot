@@ -1,13 +1,14 @@
-import stockfish
 from stockfish import *
 from conf import *
 
 from chessBot import ChessBot
+from evalBar import EvalBar
 
 
 class ChessEngine:
     stockfish: Stockfish
     robot: ChessBot
+    evalBar: EvalBar
 
     def __init__(self,
                  path: str,
@@ -17,6 +18,7 @@ class ChessEngine:
                  gripper_port=GRIPPER_PORT,
                  robot_ip=ROBOT_IP):
         self.stockfish = Stockfish(path, depth=depth)
+        self.evalBar = EvalBar(self.stockfish)
 
         if ROBOT_ACTIVATED:
             self.robot = ChessBot(gripper_model, gripper_ip, gripper_port, robot_ip)
@@ -104,4 +106,4 @@ class ChessEngine:
         self.robot.resetHeight()
 
     def __str__(self):
-        return f"{self.stockfish.get_board_visual()}\n FEN position: {self.stockfish.get_fen_position()}"
+        return f"{self.stockfish.get_board_visual()}\n FEN position: {self.stockfish.get_fen_position()} \n {self.evalBar}"
