@@ -22,9 +22,13 @@ class ChessEngine:
             self.robot = ChessBot(gripper_model, gripper_ip, gripper_port, robot_ip)
             self.robot.start()
 
-    # TODO: play (ça fait jouer le robot), is_game_over
-
-    def add_player_move(self, move: str):
+    def add_player_move(self, move: str) -> bool:
+        """
+        Ajoute un coup joué par un humain.
+        :param move: le mouvement joué (exemple: ``d2d4``)
+        :return: ``True`` si le coup est légal (et a donc été ajouté à la liste de coups joués), ``False`` sinon
+        """
+        oldFen = self.stockfish.get_fen_position()
         self.stockfish.make_moves_from_current_position([move])
         return oldFen != self.stockfish.get_fen_position()
 
