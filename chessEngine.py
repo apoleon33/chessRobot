@@ -36,10 +36,12 @@ class ChessEngine:
 
     def is_move_a_castle(self, move: str) -> bool:
         piece = self.stockfish.get_what_is_on_square(move[:2])
+
         white_castle = ['e1g1', 'e1c1']
         black_castle = ['e8g8', 'e8c8' ]
+        log(f"{move} test roque avec  et piece in white castle= {piece in white_castle} piece= {piece}")
 
-        return (piece in white_castle and piece == self.stockfish.Piece.WHITE_KING) or (piece in black_castle and piece == self.stockfish.Piece.BLACK_KING)
+        return (any(move in x  for x in white_castle) and piece == self.stockfish.Piece.WHITE_KING) or (any(move in x  for x in black_castle) and piece == self.stockfish.Piece.BLACK_KING)
 
     def castle(self, move:str) -> None:
         towerMoves = { # chaques mouvements de tour associé à chaques mouvements de rois
