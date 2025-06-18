@@ -1,6 +1,7 @@
 import time
 
 import rtde_control
+import rtde_receive
 
 from conf import *
 from coordinate import Coordinate
@@ -22,8 +23,10 @@ class ChessBot:
     # hauteur nécessaire pour prendre une pièce
     PIECE_HEIGHT: int = -0.225
 
-    speed: float = 0.5
-    acceleration: float = 0.3
+    speed: float = 0.75
+    acceleration: float = 1
+
+    robot_ip:str
 
     def __init__(self,
                  gripper_model: str = GRIPPER_MODEL,
@@ -47,6 +50,8 @@ class ChessBot:
         self.robot = rtde_control.RTDEControlInterface(robot_ip)
 
         self.coordinate = Coordinate()  # pas synchronisé avec le robot à ce moment là du code
+
+        self.robot_ip = robot_ip
 
     def start(self):
         """ Positionne le robot en A1 pour débuter la partie"""
@@ -78,6 +83,12 @@ class ChessBot:
         # time.sleep(1)
 
     def __updateCoordinate(self):
+        # rtde_c = rtde_control.RTDEControlInterface(self.robot_ip)
+        rtde_r = rtde_receive.RTDEReceiveInterface(self.robot_ip)
+        if rtde_r.isConnected() == False:
+            log("déconnection détectée, reconnnexion...")
+            rtde_r.reconnect()
+
         self.robot.moveL(self.coordinate.robotCoordinate, self.speed, self.acceleration)
 
     def goAtPieceHeight(self):
