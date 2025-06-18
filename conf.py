@@ -8,10 +8,11 @@ GRIPPER_MODEL = "rg6"
 
 # chess engine
 STOCKFISH_PATH_LINUX = "libs/stockfish/stockfish-ubuntu-x86-64-avx2"
+SAVE_FILE_PATH = "save.json"
 
 # misc
 DEBUG = True
-ROBOT_ACTIVATED: bool = False # pour pouvoir tester plus facilement
+ROBOT_ACTIVATED: bool = True # pour pouvoir tester plus facilement
 
 def log(text) -> None:
     """ N'affiche le message dans la console que si on est en mode debug"""
