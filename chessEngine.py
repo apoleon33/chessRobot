@@ -39,7 +39,7 @@ class ChessEngine:
 
         white_castle = ['e1g1', 'e1c1']
         black_castle = ['e8g8', 'e8c8' ]
-        log(f"{move} test roque avec  et piece in white castle= {piece in white_castle} piece= {piece}")
+        # log(f"{move} test roque avec  et piece in white castle= {piece in white_castle} piece= {piece}")
 
         return (any(move in x  for x in white_castle) and piece == self.stockfish.Piece.WHITE_KING) or (any(move in x  for x in black_castle) and piece == self.stockfish.Piece.BLACK_KING)
 
@@ -66,15 +66,7 @@ class ChessEngine:
                     log("capture détectée!")
                     if ROBOT_ACTIVATED:
                         # capture du pion et dépose dans la poubelle
-                        self.robot.resetHeight()
-                        self.robot.open_gripper()
-                        self.robot.goToCase(endCase)
-                        self.robot.goAtPieceHeight()
-                        self.robot.close_gripper()
-                        self.robot.resetHeight()
-                        self.robot.goToDumpster()
-                        self.robot.resetHeight()
-
+                        self.putPieceToThrash(endCase)
                         self.movePiece(startCase, endCase)
 
                 case self.stockfish.Capture.NO_CAPTURE:
@@ -83,7 +75,16 @@ class ChessEngine:
                         self.movePiece(startCase, endCase)
                     log(f"le robot a joué {bestMove}, en se déplaçant de {startCase} à {endCase}.")
                 case self.stockfish.Capture.EN_PASSANT:
-                    log("en passant détecté!, pas implémenté pour le moment :)")
+                    log("en passant détecté!")
+
+                    if ROBOT_ACTIVATED:
+                        self.robot.resetHeight()
+
+                        # en partant du principe que stockfish donne les coordonnées de son pion
+                        self.movePiece(startCase, endCase)
+                        self.putPieceToThrash(f"{endCase[0]}{int(endCase[1]) - 1}")
+
+
         else: # roque
             log("Roque detecté")
             self.movePiece(startCase, endCase)
@@ -106,6 +107,17 @@ class ChessEngine:
         self.robot.goAtPieceHeight()
         self.robot.open_gripper()
         self.robot.resetHeight()
+
+    def putPieceToThrash(self, case:str):
+        self.robot.resetHeight()
+        self.robot.open_gripper()
+        self.robot.goToCase(case)
+        self.robot.goAtPieceHeight()
+        self.robot.close_gripper()
+        self.robot.resetHeight()
+        self.robot.goToDumpster()
+        self.robot.resetHeight()
+
 
     def __str__(self):
         return f"{self.stockfish.get_board_visual()}\n FEN position: {self.stockfish.get_fen_position()} \n {self.evalBar}"
