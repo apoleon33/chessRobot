@@ -1,6 +1,6 @@
 from chessEngine import ChessEngine
 from conf import ROBOT_ACTIVATED, SAVE_FILE_PATH
-from difficulty import Difficulty
+from difficulty import Difficulty, DifficultyPreset
 from save import Save
 
 
@@ -20,8 +20,8 @@ class Game:
             "Veuillez choisir le mode de jeux:\n1. Nouvelle partie contre un humain \n2. Relancer la partie sauvegardée \n3. Partie à partir d'un FEN personnalisé \nVotre choix: ")):
             case 1:  # Nouvelle partie contre un humain
                 colorChoice = int(input("Quelle couleur le robot joue-t-il? (1=blanc/2=noir): "))
-                difficulty = Difficulty.getDifficultyFromInput()
-                self.engine.stockfish.set_elo_rating(difficulty.elo)
+                difficulty = DifficultyPreset.getDifficultyFromInput()
+                self.engine.stockfish.set_skill_level(difficulty.level)
                 self.engine.stockfish.set_depth(difficulty.depth)
 
                 self.save = Save(SAVE_FILE_PATH, {
@@ -29,7 +29,7 @@ class Game:
                     "evalBarEvolution": [],
                     "hasWhiteLastPLayed": False,
                     "isRobotWhite": colorChoice == 1,
-                    "stockfishElo": difficulty.elo,
+                    "stockfishElo": difficulty.level,
                     "stockfishDepth": difficulty.depth,
                 })
 
