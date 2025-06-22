@@ -17,7 +17,15 @@ class ChessEngine:
                  gripper_ip=GRIPPER_IP,
                  gripper_port=GRIPPER_PORT,
                  robot_ip=ROBOT_IP):
-        self.stockfish = Stockfish(path, depth=depth)
+        self.stockfish = Stockfish(
+            path,
+            depth=depth,
+            parameters={
+                "Threads": 7,
+                # "Hash": 256,
+            }
+        )
+
         self.evalBar = EvalBar(self.stockfish)
 
         if ROBOT_ACTIVATED:
@@ -38,13 +46,14 @@ class ChessEngine:
         piece = self.stockfish.get_what_is_on_square(move[:2])
 
         white_castle = ['e1g1', 'e1c1']
-        black_castle = ['e8g8', 'e8c8' ]
+        black_castle = ['e8g8', 'e8c8']
         # log(f"{move} test roque avec  et piece in white castle= {piece in white_castle} piece= {piece}")
 
-        return (any(move in x  for x in white_castle) and piece == self.stockfish.Piece.WHITE_KING) or (any(move in x  for x in black_castle) and piece == self.stockfish.Piece.BLACK_KING)
+        return (any(move in x for x in white_castle) and piece == self.stockfish.Piece.WHITE_KING) or (
+                    any(move in x for x in black_castle) and piece == self.stockfish.Piece.BLACK_KING)
 
-    def castle(self, move:str) -> None:
-        towerMoves = { # chaques mouvements de tour associé à chaques mouvements de rois
+    def castle(self, move: str) -> None:
+        towerMoves = {  # chaques mouvements de tour associé à chaques mouvements de rois
             'e1g1': "h1f1",
             'e1c1': "a1d1",
             'e8g8': "h8f8",
@@ -52,8 +61,6 @@ class ChessEngine:
         }
         assert move in towerMoves.keys()
         self.movePiece(towerMoves[move][:2], towerMoves[move][2:])
-
-
 
     def play(self):
         bestMove = self.stockfish.get_best_move()
@@ -85,7 +92,7 @@ class ChessEngine:
                         self.putPieceToThrash(f"{endCase[0]}{int(endCase[1]) - 1}")
 
 
-        else: # roque
+        else:  # roque
             log("Roque detecté")
             self.movePiece(startCase, endCase)
             self.castle(bestMove)
@@ -93,7 +100,7 @@ class ChessEngine:
         self.stockfish.make_moves_from_current_position([bestMove])
         return bestMove
 
-    def movePiece(self, startCase:str, endCase:str) -> None:
+    def movePiece(self, startCase: str, endCase: str) -> None:
         # On prend la pièce
         self.robot.resetHeight()
         self.robot.open_gripper()
@@ -108,7 +115,7 @@ class ChessEngine:
         self.robot.open_gripper()
         self.robot.resetHeight()
 
-    def putPieceToThrash(self, case:str):
+    def putPieceToThrash(self, case: str):
         self.robot.resetHeight()
         self.robot.open_gripper()
         self.robot.goToCase(case)
@@ -117,7 +124,6 @@ class ChessEngine:
         self.robot.resetHeight()
         self.robot.goToDumpster()
         self.robot.resetHeight()
-
 
     def __str__(self):
         return f"{self.stockfish.get_board_visual()}\n FEN position: {self.stockfish.get_fen_position()} \n {self.evalBar}"
