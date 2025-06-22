@@ -15,6 +15,6 @@ DEBUG = True
 ROBOT_ACTIVATED: bool = True # pour pouvoir tester plus facilement
 
 def log(text) -> None:
-    """ N'affiche le message dans la console que si on est en mode debug"""
+    """ N'affiche le message dans la console que si on est en mode debug."""
     if DEBUG:
         print(text)
