@@ -26,7 +26,11 @@ class ChessBot:
     speed: float = 0.75
     acceleration: float = 1
 
-    robot_ip:str
+    robot_ip: str
+
+    gripper_model: str
+    gripper_ip: str
+    gripper_port: int
 
     def __init__(self,
                  gripper_model: str = GRIPPER_MODEL,
@@ -41,11 +45,10 @@ class ChessBot:
         :param gripper_port:
         :param robot_ip:
         """
-        self.gripper = RG(
-            gripper=gripper_model,
-            ip=gripper_ip,
-            port=gripper_port,
-        )
+        self.gripper_model = gripper_model
+        self.gripper_ip = gripper_ip
+        self.gripper_port = gripper_port
+        self.recreateGripper()
 
         self.robot = rtde_control.RTDEControlInterface(robot_ip)
 
@@ -59,8 +62,9 @@ class ChessBot:
         log("Lancement du robot, déplacement vers la case A1 et ouverture de la pince")
 
         self.robot.moveL(self.A1_COORDINATE, self.speed, self.acceleration)
-        self.coordinate = Coordinate([0, 0, self.PIECE_HEIGHT, self.A1_COORDINATE[3], self.A1_COORDINATE[4],
+        self.coordinate = Coordinate([1, 1, self.A1_COORDINATE[2], self.A1_COORDINATE[3], self.A1_COORDINATE[4],
                                       self.A1_COORDINATE[5]])  # synchronisé
+        # self.__updateCoordinate()
         self.open_gripper()
 
         log("Fin de la procédure 'start'")
@@ -70,26 +74,28 @@ class ChessBot:
         Ouvre la pince de la bonne largeur pour attraper une pièce.
         :return: ``None``
         """
-        log(f"Ouverture de la pince d'une largeur {self.PIECE_WIDTH}mm")
+        # log(f"Ouverture de la pince d'une largeur {self.PIECE_WIDTH}mm")
+        self.gripper.close_connection()
+        self.recreateGripper()
         self.gripper.move_gripper(self.PIECE_WIDTH)
         while self.gripper.get_status()[0]:
             time.sleep(0.5)
+        self.gripper.close_connection()
         # time.sleep(1)
 
     def close_gripper(self) -> None:
+        self.gripper.close_connection()
+        self.recreateGripper()
         self.gripper.close_gripper()
         while self.gripper.get_status()[0]:
             time.sleep(0.5)
+        self.gripper.close_connection()
         # time.sleep(1)
 
     def __updateCoordinate(self):
-        # rtde_c = rtde_control.RTDEControlInterface(self.robot_ip)
-        rtde_r = rtde_receive.RTDEReceiveInterface(self.robot_ip)
-        if rtde_r.isConnected() == False:
-            log("déconnection détectée, reconnnexion...")
-            rtde_r.reconnect()
-
+        self.recreateRobot()
         self.robot.moveL(self.coordinate.robotCoordinate, self.speed, self.acceleration)
+        # self.robot.disconnect()
 
     def goAtPieceHeight(self):
         self.coordinate.z = self.PIECE_HEIGHT
@@ -112,6 +118,7 @@ class ChessBot:
         self.__updateCoordinate()
 
     def goToDumpster(self):
+        self.recreateRobot()
         self.robot.moveL([
             Echiquier.pieceTakenX.value,
             Echiquier.pieceTakenY.value,
@@ -121,6 +128,8 @@ class ChessBot:
             self.A1_COORDINATE[5]],
             self.speed,
             self.acceleration)
+
+        self.recreateRobot()
 
         self.robot.moveL([
             Echiquier.pieceTakenX.value,
@@ -135,6 +144,8 @@ class ChessBot:
         self.gripper.move_gripper(self.PIECE_WIDTH)
         while self.gripper.get_status()[0]:
             time.sleep(0.5)
+
+        self.recreateRobot()
         self.robot.moveL([
             Echiquier.pieceTakenX.value,
             Echiquier.pieceTakenY.value,
@@ -145,6 +156,21 @@ class ChessBot:
             self.speed,
             self.acceleration
         )
+
+    def recreateGripper(self):
+        try:
+            self.gripper.close_connection()
+        except:
+            pass
+        self.gripper = RG(
+            gripper=self.gripper_model,
+            ip=self.gripper_ip,
+            port=self.gripper_port,
+        )
+
+    def recreateRobot(self):
+        self.robot.disconnect()
+        self.robot = rtde_control.RTDEControlInterface(self.robot_ip)
 
     def close(self):
         """ Déconnecte la pince et le robot """
