@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/apoleon33/chessRobot/refs/heads/master/doc/header.png">
 </p>
 
-![](https://tokei.rs/b1/github/apoleon33/chessRobot) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/apoleon33/chessRobot) ![GitHub top language](https://img.shields.io/github/languages/top/apoleon33/chessRobot)
+![](https://tokei.rs/b1/github/apoleon33/chessRobot) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/apoleon33/chessRobot) [![python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 
 # Installation
 - Clonez le repository:
