@@ -1,9 +1,9 @@
 from chessEngine import ChessEngine
-from conf import STOCKFISH_PATH_LINUX
+from conf import STOCKFISH_PATH
 
 
 def setupRobot():
-    engine = ChessEngine(STOCKFISH_PATH_LINUX)
+    engine = ChessEngine(STOCKFISH_PATH)
     engine.robot.start()
     input("attente de la prise de la pièce...")
     engine.robot.close_gripper()

@@ -7,7 +7,7 @@ GRIPPER_PORT = 502
 GRIPPER_MODEL = "rg6"
 
 # chess engine
-STOCKFISH_PATH_LINUX = "libs/stockfish/stockfish-ubuntu-x86-64-avx2"
+STOCKFISH_PATH = "libs/stockfish/stockfish-ubuntu-x86-64-avx2"
 SAVE_FILE_PATH = "save.json"
 
 # misc
