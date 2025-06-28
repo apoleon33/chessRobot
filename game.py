@@ -21,15 +21,15 @@ class Game:
             case 1:  # Nouvelle partie contre un humain
                 colorChoice = int(input("Quelle couleur le robot joue-t-il? (1=blanc/2=noir): "))
                 difficulty = DifficultyPreset.getDifficultyFromInput()
-                self.engine.stockfish.set_skill_level(difficulty.level)
+                self.engine.stockfish.set_elo_rating(difficulty.elo)
                 self.engine.stockfish.set_depth(difficulty.depth)
 
                 self.save = Save(SAVE_FILE_PATH, {
-                    "FEN": "self.engine.stockfish.get_fen_position()",
+                    "FEN": self.engine.stockfish.get_fen_position(),
                     "evalBarEvolution": [],
                     "hasWhiteLastPLayed": False,
                     "isRobotWhite": colorChoice == 1,
-                    "stockfishElo": difficulty.level,
+                    "stockfishElo": difficulty.elo,
                     "stockfishDepth": difficulty.depth,
                 })
 
@@ -41,6 +41,7 @@ class Game:
                 self.save = Save.createFromSaveFile(SAVE_FILE_PATH)
 
                 self.engine.stockfish.set_fen_position(self.save.fen)
+                self.engine.stockfish.set_elo_rating(self.save.stockfishElo)
                 print(
                     f"Dernière partie sauvegardée:\n{self.engine.stockfish.get_board_visual()}\nParamètres de la sauvegarde: {self.save}")
 

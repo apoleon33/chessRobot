@@ -22,7 +22,7 @@ class ChessEngine:
             depth=depth,
             parameters={
                 "Threads": 7,
-                # "Hash": 256,
+                "UCI_LimitStrength": "true",
             }
         )
 
