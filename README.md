@@ -3,7 +3,8 @@
   <cite> Make a Universal Robot 5 play chess!</cite>
 </p>
 
-![](https://tokei.rs/b1/github/apoleon33/chessRobot) [![python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org) [![YouTube Video Views](https://img.shields.io/youtube/views/ng3PlrOtbL0?style=flat&logo=youtube&label=video%20demo&link=https%3A%2F%2Fyoutube.com%2Fshorts%2Fng3PlrOtbL0)](https://youtube.com/shorts/ng3PlrOtbL0)
+![](https://tokei.rs/b1/github/apoleon33/chessRobot) [![python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org) [![YouTube Video Views](https://img.shields.io/youtube/views/ng3PlrOtbL0?style=flat&logo=youtube&label=video%20demo&link=https%3A%2F%2Fyoutube.com%2Fshorts%2Fng3PlrOtbL0)](https://youtube.com/shorts/ng3PlrOtbL0) [![GitHub License](https://img.shields.io/github/license/apoleon33/chessRobot)](https://opensource.org/license/MIT)
+
 
 
 > [!NOTE]  
