@@ -7,7 +7,7 @@
 
 
 > [!NOTE]  
-> Projet créé dans le cadre des projets de fin d'année en 3ème année de junia ISEN 3 année 2024-2025, catégorie robotique.
+> Projet créé dans le cadre des projets de fin d'année en 3ème année de junia ISEN année 2024-2025, catégorie robotique.
 
 # Installation
 - Clonez le repository:
@@ -42,3 +42,7 @@ Afin d'aligner parfaitement l'échiquier avec les coordonnées stockées, utilis
 ```bash
 python3 main.py
 ```
+
+# Remerciements
+- [La librairie ur_rtde](https://gitlab.com/sdurobotics/ur_rtde), pour controler le robot.
+- [onrobot-rg](https://github.com/takuya-ki/onrobot-rg), le seul code qui fonctionnait avec notre pince.
