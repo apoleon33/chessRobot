@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 ## Calibration robot-échiquier
 
-Afin d'aligner parfaitement l'échiquier avec les coordonnées stockées, utilisez ou bien `setup_robot.py`, ou si vous avez jupyter notebook d'installé, `setup_robot.ipynb
+Afin d'aligner parfaitement l'échiquier avec les coordonnées stockées, utilisez ou bien `setup_robot.py`, ou si vous avez jupyter notebook d'installé, `setup_robot.ipynb`
 
 ## Lancement du programme
 Éxécutez simplement `main.py` (testé avec python 3.10):
